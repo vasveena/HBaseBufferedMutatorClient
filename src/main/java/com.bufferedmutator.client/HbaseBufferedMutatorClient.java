@@ -58,21 +58,23 @@ public class HbaseBufferedMutatorClient extends Configured implements Tool {
   private static final int TASK_COUNT = 1000;
   private static final TableName TABLE = TableName.valueOf("test");
   private static final byte[] FAMILY = Bytes.toBytes("family");
-  private static final int DATA_SIZE = 175000;
+  private static final int DATA_SIZE = 350000;
   private static final String RANDOM_STRING = "dddddfffffhhhhh";
+  private static final Random r = new Random();
 
   protected String buildKeyName() {
     //Building custom rowkey based on Acoustic data
     String uuid1 = UUID.randomUUID().toString().replace("-", "").toUpperCase();
     String uuid2 = UUID.randomUUID().toString().replace("-", "").toUpperCase();
     long longNumber = (long) Math.floor(Math.random() * 9_000_000_000L) + 1_000_000_000L; //can't do Int at 10 digit
-    return uuid1+"#"+RANDOM_STRING+"#"+String.format("%04d", new Random().nextInt(10000))+"#"+Long.toString(longNumber)+"#"+uuid2;
+    return uuid1+"#"+RANDOM_STRING+"#"+String.format("%04d", r.nextInt(10000))+"#"+Long.toString(longNumber)+"#"+uuid2;
   }
 
   protected String buildValue() {
     StringBuilder sb = new StringBuilder(DATA_SIZE);
+    Random r = new Random();
     for (int i=0; i<DATA_SIZE; i++) { //Building a string of 350 KB
-      sb.append('a');
+      sb.append((char)(r.nextInt(26) + 'a'));
     }
     return sb.toString();
   }
@@ -101,7 +103,7 @@ public class HbaseBufferedMutatorClient extends Configured implements Tool {
       /** worker pool that operates on BufferedTable instances */
       final ExecutorService workerPool = Executors.newFixedThreadPool(POOL_SIZE);
       List<Future<Void>> futures = new ArrayList<>(TASK_COUNT);
-
+      final Random r = new Random();
       for (int i = 0; i < TASK_COUNT; i++) {
         //final int j=i;
         futures.add(workerPool.submit(new Callable<Void>() {
