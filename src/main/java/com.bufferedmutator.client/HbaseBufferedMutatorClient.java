@@ -72,7 +72,6 @@ public class HbaseBufferedMutatorClient extends Configured implements Tool {
 
   protected String buildValue() {
     StringBuilder sb = new StringBuilder(DATA_SIZE);
-    Random r = new Random();
     for (int i=0; i<DATA_SIZE; i++) { //Building a string of 350 KB
       sb.append((char)(r.nextInt(26) + 'a'));
     }

@@ -37,8 +37,8 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
+                            <!-- addClasspath>true</addClasspath -->
+                            <!-- classpathPrefix>lib/</classpathPrefix-->
                             <mainClass>com.bufferedmutator.client.HbaseBufferedMutatorClient</mainClass>
                         </manifest>
                     </archive>
